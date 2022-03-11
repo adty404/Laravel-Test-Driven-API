@@ -12,7 +12,7 @@ class TodoListTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function fetch_todo_list()
+    public function fetch_all_todo_list()
     {
         // preperation / prepare
         TodoList::factory()->create(['name' => 'my list']); //Overiding the default factory
@@ -30,5 +30,17 @@ class TodoListTest extends TestCase
 
             // example of not overiding the default factory
             // $this->assertEquals($data,$response->json()[0]['name']);
+    }
+
+    /** @test */
+    public function fetch_single_todo_list()
+    {
+        $list = TodoList::factory()->create();
+
+        $response = $this->getJson(route('todo-list.show', $list->id))
+                    ->assertOk()
+                    ->json();
+
+        $this->assertEquals($response['name'],  $list->name);
     }
 }
