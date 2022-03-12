@@ -59,4 +59,32 @@ class TodoListTest extends TestCase
                 ->assertUnprocessable()
                 ->assertJsonValidationErrors(['name']);
     }
+
+    /** @test */
+    public function delete_todo_list()
+    {
+        $this->deleteJson(route('todo-list.destroy',$this->list->id))
+            ->assertNoContent();
+
+        $this->assertDatabaseMissing('todo_lists',['name' => $this->list->name]);
+    }
+
+    /** @test */
+    public function update_todo_list()
+    {
+        $this->patchJson(route('todo-list.update',$this->list->id),['name' => 'updated name'])
+        ->assertOk();
+
+        $this->assertDatabaseHas('todo_lists',['id' => $this->list->id, 'name' => 'updated name']);
+    }
+
+    /** @test */
+    public function while_updating_todo_list_name_field_is_required()
+    {
+        $this->withExceptionHandling();
+
+        $this->patchJson(route('todo-list.update', $this->list->id))
+                ->assertUnprocessable()
+                ->assertJsonValidationErrors(['name']);
+    }
 }
