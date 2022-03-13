@@ -25,7 +25,8 @@ class TaskTest extends TestCase
         $this->assertEquals($response[0]['todo_list_id'], $list->id);
     }
 
-    public function test_store_a_task_for_a_todo_list()
+    /** @test */
+    public function store_a_task_for_a_todo_list()
     {
         $list = $this->createTodoList();
         $task = Task::factory()->make();
@@ -39,7 +40,8 @@ class TaskTest extends TestCase
         ]);
     }
 
-    public function test_update_a_task_of_a_todo_list()
+    /** @test */
+    public function update_a_task_of_a_todo_list()
     {
         $task = $this->createTask();
 
@@ -49,7 +51,8 @@ class TaskTest extends TestCase
         $this->assertDatabaseHas('tasks',['title' => 'updated title']);
     }
 
-    public function test_delete_a_task_from_database()
+    /** @test */
+    public function delete_a_task_from_database()
     {
         $task = $this->createTask();
 
